@@ -9,3 +9,8 @@ dialog.ShowDialog()
 If dialog.FileName IsNot "" Then
     'code here
 End If
+
+
+'rename file to .OK
+Dim newfile As String = $"<file>-{DateTime.Now:yyyyMMddHHmmss}.OK"
+File.Move(<file>, newfile)
