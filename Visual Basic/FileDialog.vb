@@ -12,5 +12,5 @@ End If
 
 
 'rename file to .OK
-Dim newfile As String = $"<file>-{DateTime.Now:yyyyMMddHHmmss}.OK"
+Dim newfile As String = "<file>-" + DateTime.Now:yyyyMMddHHmmss + ".OK"
 File.Move(<file>, newfile)
