@@ -1,3 +1,5 @@
+using System.IO;
+
 //Class to write error / information to a log file
 
 public static string dir = $@"";
