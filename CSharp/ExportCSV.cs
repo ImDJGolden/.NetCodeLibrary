@@ -50,3 +50,30 @@ public void ExportCsv(DataTable dt)
         throw;
     }
 }
+
+
+//Export Line to csv
+
+public static void ExportCSV(string oornr, int klassement, int prijs)
+{
+    StreamWriter sw = null;
+
+    try
+    {
+        if (!Directory.Exists(dir))
+        {
+            Directory.CreateDirectory(dir);
+        }
+        
+        sw = File.AppendText(pathCsv);
+        sw.WriteLine($"{oornr};{klassement};{Convert.ToDouble(prijs)}");
+    }
+    catch (Exception)
+    {
+        throw;
+    }
+    finally
+    {
+        sw.Close();
+    }
+}
