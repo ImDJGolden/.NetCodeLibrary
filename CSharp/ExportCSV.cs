@@ -54,7 +54,7 @@ public void ExportCsv(DataTable dt)
 
 //Export Line to csv
 
-public static void ExportCSV(string oornr, int klassement, int prijs)
+public static void ExportCSV(DataRow row)
 {
     StreamWriter sw = null;
 
@@ -66,7 +66,7 @@ public static void ExportCSV(string oornr, int klassement, int prijs)
         }
         
         sw = File.AppendText(pathCsv);
-        sw.WriteLine($"{oornr};{klassement};{Convert.ToDouble(prijs)}");
+        sw.WriteLine($"{row[0].ToString}");
     }
     catch (Exception)
     {
