@@ -30,6 +30,7 @@ public partial class klasse
         }
 
         returnmsg = idGun + beeptone
+        //Maak scherm leeg
         + (char)27 + "[1;1H"
         + (char)27 + "[0K"
         + (char)27 + "[2;1H"
@@ -41,6 +42,7 @@ public partial class klasse
         + (char)27 + "[5;1H"
         + (char)27 + "[0K"
 
+        //Vul scherm
         + (char)27 + "[1;1H" + "OorNr:  "
         + (char)27 + "[2;1H" + "----------------------"
         + (char)27 + "[3;1H" + msg
