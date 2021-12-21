@@ -6,7 +6,7 @@ AVG();                                  -- Geeft het gemiddelde van een numeriek
 SUM();                                  -- Geeft de totale som van een numerieke kolom.
 
 
--- *** MIN() | MAX()
+-- *** MIN() | MAX() ***
 SELECT MIN(<kolom>)                         -- Minimum waarde
 FROM <tabel>;
 --WHERE <condition>
@@ -18,19 +18,19 @@ FROM <tabel>;
 --WHERE <conditie>
 
 
--- *** COUNT()
+-- *** COUNT() ***
 SELECT COUNT(<kolom>)
 FROM <tabel>
 --WHERE <conditie>
 
 
--- *** AVG()
+-- *** AVG() ***
 SELECT AVG(<kolom>)
 FROM <tabel>
 --WHERE <conditie>
 
 
--- *** SUM()
+-- *** SUM() ***
 SELECT SUM(<kolom>)
 FROM <tabel>
 --WHERE <conditie>
