@@ -1,3 +1,8 @@
+//Import excel references.
+//References > COM > Microsoft Excel 16.0 Object Library
+Using Excel = Microsoft.Office.Interop.Excel;
+
+
 public static DataTable ImportExcel()
 {
     //Excel != 0-based --> start index = 1
