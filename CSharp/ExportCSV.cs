@@ -1,6 +1,6 @@
 // Export DataTable to CSV file
 
-public string ExportPath = Path.Combine("", "Output.csv")
+public string ExportPath = Path.Combine("", "Output.csv");
 
 public void ExportCsv(DataTable dt)
 {

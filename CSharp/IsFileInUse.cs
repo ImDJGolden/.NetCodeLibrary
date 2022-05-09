@@ -9,7 +9,7 @@ else {
     //File is used by another Process
 }
 
-//Class
+//Function
 protected virtual bool IsFileLocked(FileInfo file)
 {
     try {
