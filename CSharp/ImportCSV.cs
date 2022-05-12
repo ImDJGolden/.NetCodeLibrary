@@ -1,79 +1,84 @@
 // CSV File Without Headers
-private DataTable GetDataTableFromCSV(string filename)
+namespace ImportCSV
 {
-    DataTable CsvData = new DataTable();
+    public partial class x 
+    {
+        private DataTable GetDataTableFromCSV(string filename)
+        {
+            DataTable CsvData = new DataTable();
 
-    try {
-        using (TextFieldParser csvReader = new TextFieldParser(filename)) {
-            csvReader.SetDelimiters(new string[] { ";" });
-            csvReader.HasFieldsEnclosedInQuotes = true;
+            try {
+                using (TextFieldParser csvReader = new TextFieldParser(filename)) {
+                    csvReader.SetDelimiters(new string[] { ";" });
+                    csvReader.HasFieldsEnclosedInQuotes = true;
 
-            // Add Columns
-            CsvData.Columns.AddRange(new DataColumn[] {
-                new DataColumn("Column Name here", typeof(string))
-            });
+                    // Add Columns
+                    CsvData.Columns.AddRange(new DataColumn[] {
+                        new DataColumn("Column Name here", typeof(string))
+                    });
 
-            // Read data from CSV
-            while (!csvReader.EndOfData) {
-                string[] fieldData = csvReader.ReadFields();
-                DataRow dr = CsvData.NewRow();
+                    // Read data from CSV
+                    while (!csvReader.EndOfData) {
+                        string[] fieldData = csvReader.ReadFields();
+                        DataRow dr = CsvData.NewRow();
 
-                for (int i = 0; i <= fieldData.Length - 1; i++) {
-                    if (fieldData[i] == null) {
-                        //Null value in csv found
-                    }
-                    else{
-                        dr(i) = fieldData[i];
+                        for (int i = 0; i <= fieldData.Length - 1; i++) {
+                            if (fieldData[i] == null) {
+                                //Null value in csv found
+                            }
+                            else{
+                                dr(i) = fieldData[i];
+                            }
+                        }
                     }
                 }
             }
-        }
-        catch (Exception ex) {
-            throw;
-        }
-
-        return CsvData;
-    }
-}
-
-
-// CSV File With Headers
-private DataTable GetDataTableFromCSV(string filename)
-{
-    DataTable CsvData = new DataTable();
-
-    try {
-        using (TextFieldParser csvReader = new TextFieldParser(filename)) {
-            csvReader.SetDelimiters(new string[] { ";" });
-            csvReader.HasFieldsEnclosedInQuotes = true;
-
-            // Read Columns from CSV
-            string[] colFieds = csvReader.ReadFields();
-
-            foreach (string column in colFieds) {
-                DataColumn datacolumn = new DataColumn(column);
-                CsvData.Columns.Add(datacolumn);
+            catch (Exception ex) {
+                throw;
             }
 
-            // Read data from CSV
-            while (!csvReader.EndOfData) {
-                string[] fieldData = csvReader.ReadFields();
-                DataRow dr = CsvData.NewRow();
+            return CsvData;
+        }
 
-                for (int i = 0; i <= fieldData.Length - 1; i++) {
-                    if (fieldData[i] == null) {
-                        //Null value found in csv
+        // CSV File With Headers
+        private DataTable GetDataTableFromCSV(string filename)
+        {
+            DataTable CsvData = new DataTable();
+
+            try {
+                using (TextFieldParser csvReader = new TextFieldParser(filename)) {
+                    csvReader.SetDelimiters(new string[] { ";" });
+                    csvReader.HasFieldsEnclosedInQuotes = true;
+
+                    // Read Columns from CSV
+                    string[] colFieds = csvReader.ReadFields();
+
+                    foreach (string column in colFieds) {
+                        DataColumn datacolumn = new DataColumn(column);
+                        CsvData.Columns.Add(datacolumn);
                     }
-                    else {
-                        dr(i) = fieldData[i];
+
+                    // Read data from CSV
+                    while (!csvReader.EndOfData) {
+                        string[] fieldData = csvReader.ReadFields();
+                        DataRow dr = CsvData.NewRow();
+
+                        for (int i = 0; i <= fieldData.Length - 1; i++) {
+                            if (fieldData[i] == null) {
+                                //Null value found in csv
+                            }
+                            else {
+                                dr(i) = fieldData[i];
+                            }
+                        }
                     }
                 }
             }
-        }
-        catch (Exception ex) {
-            throw;
-        }
+            catch (Exception ex) {
+                throw;
+            }
 
-        return CsvData;
+            return CsvData;
+        }
     }
 }
