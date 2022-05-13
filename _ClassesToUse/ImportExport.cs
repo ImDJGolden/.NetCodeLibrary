@@ -97,6 +97,12 @@ public static class ImportExport
                     //...
                 });
 
+                //  [ADD COLUMNS - Automatic]
+                for (int c = 0; c <= csv.lines.Count - 1; c++) 
+                {
+                    dt.Columns.add($"Column {c}");
+                }
+
                 //  [ROWS]
                 while (!csv.EndOfData) 
                 {
@@ -182,7 +188,131 @@ public static class ImportExport
     public static bool ExportExcel(DataTable dt)
     //Export data from datatable to Excel file
     {
+        Excel.Application xlApp = new Excel.Application();
+        Excel.Workbook xlWorkbook;
+        Excel.Worksheet xlWorksheet;
 
+        xlWorkbook = xlApp.Workbook.Add();
+        xlWorksheet = xlWorkbook.ActiveSheet();
+
+        int colIndex = 0;
+        int rowIndex = 0;
+
+        try
+        {
+            //  [COLUMNS]
+            foreach (DataColumn dc in dt) 
+            {
+                //  ***code here***
+                switch(dc.ColumnName)
+                {
+                    case "":
+                        colIndex += 1;
+                        xlApp.Cells(1, colIndex) = "";
+                        break;
+
+                    //...
+
+                    case default:
+                        break;
+                }
+            }
+
+            //  [ROWS]
+            foreach (DataRow dr in dt)
+            {
+                rowIndex += 1;
+                colIndex = 0;
+
+                foreach (DataColumn dc in dt)
+                {
+                    //  ***code here***
+                    switch(dc.ColumnName)
+                    {
+                        case "":
+                            colIndex += 1;
+                            xlApp.Cells(rowIndex + 1, colIndex) = dr("");
+                            break;
+
+                        //...
+
+                        case default:
+                            break;
+                    }
+                }
+            }
+
+            xlWorksheet.Columns.AutoFit();
+            xlWorkbook.SaveAs("filePath here");
+            xlWorkbook.Close();
+            xlApp.Quit();
+
+            return true;
+        }
+        catch 
+        {
+            return false;
+            throw;
+        }
+    }
+    
+    public static void ExportCsv(DataTable dt)
+    //Export data from datatable to CSV file 
+    {
+        string filePathExport = "";
+        StreamWriter sw = File.AppendText(filePathExport);
+        List<string> export = new List<string>();
+
+        try
+        {
+            //  [COLUMNS]
+            foreach (DataColumn dc in dt.Columns) 
+            {
+                export.Add(string.Join(";", dc.ColumnName));
+            }
+
+            //  [ROWS]
+            foreach (DataRow dr in dt.Rows) 
+            {
+                foreach (DataColumn dc in dt.Columns) 
+                {
+                    export.Add(string.Join(";", dr.Cells[dc.index].value.ToString()));
+                }
+            }
+
+            for (int i = 0; i <= export.Count - 1; i++)
+            {
+                sw.WriteLine(export[i]);
+            }
+        }
+        catch
+        {
+            throw;
+        }
+        finally 
+        {
+            sw.Close();
+        }
+    }
+    
+    public static void ExportCsv(DataRow dr)
+    //Export data from a single datarow to CSV file
+    {
+        string filePathExport = "";
+        StreamWriter sw = File.AppendText(filePathExport);
+
+        try 
+        {
+            sw.WriteLine(dr[0].ToString);
+        }
+        catch 
+        {
+            throw;
+        }
+        finally 
+        {
+            sw.Close();
+        }
     }
     #endregion
 }
