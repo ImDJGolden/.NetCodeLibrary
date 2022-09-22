@@ -1,0 +1,25 @@
+Dim Value as double = 0,99
+
+Value.ToString.Replace(",", ".")
+
+Public Sub InsertDouble(ByVal value As Double)
+        Dim conn As New SqlConnection(Me.mCS)
+        Dim cmd As New SqlCommand
+
+        cmd.Connection = conn
+
+        Try
+            conn.Open()
+
+            Dim sql As String = $"INSERT INTO X " +
+                                $"(valDouble) " +
+                                $"VALUES ('{value.ToString.Replace(",", ".")}')"
+
+            cmd.CommandText = sql
+            Application.DoEvents()
+            cmd.ExecuteNonQuery()
+
+        Catch ex As Exception
+            Throw
+        End Try
+    End Sub
