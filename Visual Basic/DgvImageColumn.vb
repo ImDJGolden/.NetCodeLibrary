@@ -1,3 +1,5 @@
+'Change dgv properties to allow Image resizing
+
 Private Sub FormSelectContainer_Load(sender As Object, e As EventArgs) Handles MyBase.Load
     Try
         dtLeeggoed = dblg.GetLeeggoed()
