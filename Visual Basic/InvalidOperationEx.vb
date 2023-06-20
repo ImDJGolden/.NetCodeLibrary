@@ -31,7 +31,10 @@
 
 
 'FIX
-dim topLeftHeaderCell = DataGridView.topLeftHeaderCell
+Public Sub New()
+    InitializeComponent()
+    Dim topLeftHeaderCell = dgvScan.TopLeftHeaderCell
+End Sub
 
 
 
