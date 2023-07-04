@@ -33,6 +33,7 @@
 'FIX
 Public Sub New()
     InitializeComponent()
+    'Add code below
     Dim topLeftHeaderCell = dgvScan.TopLeftHeaderCell
 End Sub
 
