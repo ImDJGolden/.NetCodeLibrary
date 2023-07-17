@@ -1,61 +1,89 @@
-//Datalogic PowerScan oornummer en een return message sturen.
+namespace Scanner {
+    public class Form {
+        private void COM_DataReceived(object sender, SerialDataReceivedEventArgs e)
+		{
+			try
+			{
+				this.Invoke(new EventHandler(ProcessScanning));
+			}
+			catch (Exception ex)
+			{
+				Msgbox.Error(ex.Message);
+			}
+		}
 
-public partial class klasse
-{
-    private string mSC = ""; 
+        private void ProcessScanning(object s, EventArgs e)
+		{
+			string mSCBuff = "";
+			try
+			{
+				mSCBuff = this.COM.ReadLine() + "\u0003";
 
-    private void ProcessScanning(object sender, EventArgs e){
-        this.mSC = ""; //COM.ReadExisting(); - lees com poort
+				
+				//Trim Prefix en Sufix
+				if (!mSCBuff.StartsWith("\u0002"))
+				{
+					mSCBuff = mSCBuff.Substring(mSCBuff.IndexOf("\u0002"));
+				}
+				string data = mSCBuff.Substring(0, mSCBuff.IndexOf("\u0003") + 1).Trim('\u0002', '\u0003');
+				data = (data.StartsWith("]")) ? data.Substring(3) : data;
 
-        if(mSC.Length > 12 && mSC.Contains(Char.ConvertFromUtf32(2)) && mSC.Contains(Char.ConvertFromUtf32(3))){
-            string idGun = this.mSC.Substring(0, 12); //ID van scanner: 1ste 12 chars
-            string data = this.mSC.Substring(12); //data
-            
-            if (data.StartsWith("\u0002") && data.EndsWith("\u0003")){
-                data = data.Trim('\u0002', '\u0003');
-                //data from scan
-
-                //send return to scanner
-                SendMessageToCOM("", false);
-            }
-        }
+				//Do Something With Data				
+			}
+			catch (Exception ex)
+			{
+				Log.Write($"ERROR - ProcesScanning: {ex.Message}");
+				Msgbox.Error(ex.Message);
+			}
+		}
     }
 
-    private void SendMessageToCOM(String msg, Boolean errorbeep) {
-        string beeptone = "";
-        string returnmsg = "";
+    public class Serial {
+        static SerialPort _COMPort;
 
-        if (errorbeep) {
-            beeptone = Char.ConvertFromUtf32(27) + "[0q" + Char.ConvertFromUtf32(27) + "[2q" + Char.ConvertFromUtf32(27) + "[8q" + Char.ConvertFromUtf32(27) + "[5q" + Char.ConvertFromUtf32(27) + "[9q";
+        public static SerialPort OpenComPort()
+        {
+            if (_COMPort is null)
+            {
+                try
+                {
+                    _COMPort = new SerialPort
+                    {
+                        PortName = System.Configuration.ConfigurationManager.AppSettings["COMPort"], //App.config
+                        BaudRate = 9600,
+                        DataBits = 8,
+                        StopBits = StopBits.One,
+                        Parity = Parity.None,
+                        ReadTimeout = 1500
+                    };
+
+                    _COMPort.Open();
+
+                    _COMPort.DtrEnable = true;
+                    _COMPort.RtsEnable = true;
+                }
+                catch (Exception Ex)
+                {
+                    MessageBox.Show(Ex.Message, "Connection Error COM", MessageBoxButtons.OK);
+                }
+            }
+            return _COMPort;
         }
 
-        returnmsg = idGun + beeptone
-        //Maak scherm leeg
-        + (char)27 + "[1;1H"
-        + (char)27 + "[0K"
-        + (char)27 + "[2;1H"
-        + (char)27 + "[0K"
-        + (char)27 + "[3;1H"
-        + (char)27 + "[0K"
-        + (char)27 + "[4;1H"
-        + (char)27 + "[0K"
-        + (char)27 + "[5;1H"
-        + (char)27 + "[0K"
-
-        //Vul scherm
-        + (char)27 + "[1;1H" + "OorNr:  "
-        + (char)27 + "[2;1H" + "----------------------"
-        + (char)27 + "[3;1H" + msg
-        + (char)27 + "[4;1H" + "Klasse: "
-        + (char)27 + "[5;1H" + "Prijs:  "
-        + (char)13;
-
-        try {
-            this.COM.Write(returnmsg);
-        }
-        catch (Exception ex) {
-            MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            Log.Write(ex.Message);
+        public static void CloseComPort()
+        {
+            try
+            {
+                if (_COMPort.IsOpen)
+                {
+                    _COMPort.Close();
+                }
+                _COMPort = null;
+            }
+            catch (Exception Ex)
+            {
+                MessageBox.Show(Ex.Message, "Connection Error COM", MessageBoxButtons.OK);
+            }
         }
     }
 }
