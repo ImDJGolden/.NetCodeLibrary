@@ -23,6 +23,8 @@ Public Shared myForm As FormVerIngavePrijzenSNIN_Nini = Nothing
     End Sub
 
 '... .vb
+Private Shared _formTikklokVerwerking As FormTikklokVerwerkingExtern
+
 Public Shared Function GetInstance() As FormTikklokVerwerkingExtern
 	If _formTikklokVerwerking Is Nothing OrElse _formTikklokVerwerking.IsDisposed Then _formTikklokVerwerking = New FormTikklokVerwerkingExtern
 	Return _formTikklokVerwerking
